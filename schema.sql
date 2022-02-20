@@ -35,4 +35,34 @@ CREATE TABLE salaries (
   PRIMARY KEY (emp_no)
 );
 
+CREATE TABLE dept_emp (
+emp_no INT NOT NULL,
+    dept_no VARCHAR(4) NOT NULL,
+    from_date DATE NOT NULL,
+    to_date DATE NOT NULL,
+FOREIGN KEY (emp_no) REFERENCES employees (emp_no),
+FOREIGN KEY (dept_no) REFERENCES departments (dept_no),
+    PRIMARY KEY (emp_no, dept_no)
+);
+
+CREATE TABLE titles (
+    emp_no INT NOT NULL,
+    title VARCHAR NOT NULL,
+    from_date DATE NOT NULL,
+    to_date DATE NOT NULL,
+	FOREIGN KEY (emp_no) REFERENCES employees (emp_no),
+    PRIMARY KEY (emp_no, title, from_date)
+);
+
 SELECT * FROM departments;
+SELECT * FROM dept_manager;
+SELECT * FROM dept_emp;
+SELECT * FROM salaries;
+SELECT * FROM titles;
+SELECT * FROM employees;
+
+--Needed to drop employees because of its foreign key. Because the FOREIGN KEY constraint references other tables, we need to import the data in a specific order.
+--For example, the dept_emp table references the Employees table through its foreign key. If there is no data in the Employees table, then there are no foreign keys to link to, and an error will occur.
+--CASCADE got rid of the table's connections. After importing in order, re-ran employees table code
+DROP TABLE employees
+	CASCADE
